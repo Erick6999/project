@@ -1,0 +1,4 @@
+EVENT: Start recording at 1745.9118363 seconds
+EVENT: Stop recording, 1745.9118363 seconds to 2012.7356957 seconds, 266.8238594 total
+INFO: Text (GP3 HD) stream, gaze, Gaze.csv, 1745.9328493 seconds to 2012.7289368 seconds
+INFO: Video (Screen) stream, display, Video_display.mp4, 1745.9331463 seconds to 2012.608494 seconds
