@@ -149,7 +149,12 @@ class gazeProcessor:
 
                 for fig in sacList:
                     cv2.line(copyFrame, (int(fig[0]), int(fig[1])), (int(fig[2]), int(fig[3])), (0,0,255), 4)
-
+#Desde aquí eh modificado el proyecto, para agregar los colores a los circulos, estos circulos son fijaciones en ellos se iran colocando el color de acuerdo a la emocion
+#El objetivo es hacer que cada circulo demuestre una emocion y se pinte de acuerdo al color de la emoción, en la siguiente linea explico los colores
+#El color rojo es para la emocion positiva, azul para la negativa y gris para la neutral.
+#Como te expique antes, se usaran valores para la valencia y activacion, te dare detalles enseguida
+#El registro de la informacion debe ser en un archivo csv con las siguientes caracteristicas
+#que contiene en cada columna los slots correspondientes a 15 segundos de la grabación, es  decir, que cada 15 segundos fue registrando la emoción, el primer renglón indica la valencia: positiva=1, negativa=0; el segundo renglón indica la excitación: alta=1, baja=0; los renglones 3 y 4 indican la valencia y excitación respectivamente, pero con la diferencia de que el algoritmo de regresión que se utilizó para clasificar la emoción proporciona valores en el rango de 1 al 9, representando una valencia positiva y alta si los valores se encuentran entre 6 y 9, una valencia y excitación neutra con valor igual a 5 y una valencia negativa y baja si los valores se encuentran entre 1 y 4
                 #Define el tamaño de los circulos dependiendo de su duración
                 CIRCLE_ID = 0
                 for fig in fixList:
@@ -163,8 +168,7 @@ class gazeProcessor:
                     elif CIRCLE_ID == 1:
                         cv2.circle(copyFrame, centro, size, (155,155,155), cv2.FILLED)
                     elif CIRCLE_ID == 2:
-                            cv2.circle(copyFrame, centro, size, (255,0,0), cv2.FILLED)  
-                    #cv2.circle(copyFrame, centro, size, (56, 190, 224), cv2.FILLED)  
+                            cv2.circle(copyFrame, centro, size, (255,0,0), cv2.FILLED)   
                     CIRCLE_ID = CIRCLE_ID+1      
                     #
                     cv2.addWeighted(frame, 0.4, frame, 1 - 0.4, 0)
@@ -175,7 +179,7 @@ class gazeProcessor:
                     TEXT_SCALE = 1
                     TEXT_SCALE_SUB = 0.75
                     TEXT_THICKNESS = 2
-
+#Este codigo es para visualizar el color y numero de fijacion que va, de momento solo eh asignado a 3 circulos como ejemplo de ejecucion pero de esto no va el proyecto, solo es mero ilustrativo.
                     text_size, _ = cv2.getTextSize(str(TEXT), TEXT_FACE, TEXT_SCALE, TEXT_THICKNESS)
                     text_origin = (int(fig[0] - text_size[0] / 2), int(fig[1] + text_size[1] / 2))
                     text_origin_sub = (int(fig[0] - text_size[0] / 2), int((fig[1] + text_size[1] / 2)+30))
@@ -198,6 +202,7 @@ class gazeProcessor:
                 out.write(copy)
             else:
                 break
+#Hasta acá es donde eh editado el proyecto. 
 
         # Release everything if job is finished
         cap.release()
