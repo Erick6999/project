@@ -10,10 +10,11 @@ from turtle import circle
 import numpy as np
 import cv2
 import emoji
+import pandas as pd
+
 
 # external
 from datetime import datetime
-
 
 class gazeProcessor:
 
@@ -41,6 +42,9 @@ class gazeProcessor:
         self.nombreVideo   = self.archivoVideo.split(".")[0]
         self.nombreArchivo = archivoDatos.split(".")[0]
         self.savePath = savePath
+
+        self.data = self.load_data()
+        self.data.to_csv("resultados.csv", index=False)
         
         #dataSet y blinkSet son donde se guarda la info del archivo
         with open(archivoDatos, 'r') as gaze_file:
@@ -83,6 +87,30 @@ class gazeProcessor:
 
     # # # # #
     # METHODS   
+    def load_data(self):
+        pos_data = pd.read_csv("GazeDataOutput-Positivo2.csv")
+        neg_data = pd.read_csv("GazeDataOutput-Negativo2.csv")
+        # Manipular los datos y crear el nuevo vector de datos
+        data = [['X Fixation Data', 'Y Fixation Data', 'Timestamp', 'Valencia', 'Emocion']]
+
+        # Aquí puedes usar los datos de pos_data y neg_data para manipularlos y crear el nuevo vector de datos
+        # ...
+        pos_data = pos_data[["X Gaze Data", "Y Gaze Data", "Timestamp"]]
+        pos_data.columns = ["X Fixation Data", "Y Fixation Data", "Timestamp"]
+        pos_data["Valencia"] = 1
+        pos_data["Emocion"] = "Positiva"
+
+        neg_data = neg_data[["X Gaze Data", "Y Gaze Data", "Timestamp"]]
+        neg_data.columns = ["X Fixation Data", "Y Fixation Data", "Timestamp"]
+        neg_data["Valencia"] = 0
+        neg_data["Emocion"] = "Negativa"
+
+        data = pos_data.append(neg_data)
+        data.to_csv("resultados.csv", index=False)
+        return data
+    
+
+
     def scanVideo(self, length = 10):
         """
         Método que genera el video de sacadas a paritr de un arreglo de datos del
@@ -154,7 +182,6 @@ class gazeProcessor:
 #El color rojo es para la emocion positiva, azul para la negativa y gris para la neutral.
 #Como te expique antes, se usaran valores para la valencia y activacion, te dare detalles enseguida
 #El registro de la informacion debe ser en un archivo csv con las siguientes caracteristicas
-#que contiene en cada columna los slots correspondientes a 15 segundos de la grabación, es  decir, que cada 15 segundos fue registrando la emoción, el primer renglón indica la valencia: positiva=1, negativa=0; el segundo renglón indica la excitación: alta=1, baja=0; los renglones 3 y 4 indican la valencia y excitación respectivamente, pero con la diferencia de que el algoritmo de regresión que se utilizó para clasificar la emoción proporciona valores en el rango de 1 al 9, representando una valencia positiva y alta si los valores se encuentran entre 6 y 9, una valencia y excitación neutra con valor igual a 5 y una valencia negativa y baja si los valores se encuentran entre 1 y 4
                 #Define el tamaño de los circulos dependiendo de su duración
                 CIRCLE_ID = 0
                 for fig in fixList:
