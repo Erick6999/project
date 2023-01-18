@@ -88,26 +88,31 @@ class gazeProcessor:
     # # # # #
     # METHODS   
     def load_data(self):
-        pos_data = pd.read_csv("GazeDataOutput-Positivo2.csv")
-        neg_data = pd.read_csv("GazeDataOutput-Negativo2.csv")
+        pos_data = pd.read_csv("E:\Erick\Documents\Erick\Nueva\Nueva\drivers\GazeDataOutput-Positivo2.csv")
+        neg_data = pd.read_csv("E:\Erick\Documents\Erick\Nueva\Nueva\drivers\GazeDataOutput-Negativo2.csv")
+        resultados = pd.read_csv("E:\Erick\Documents\Erick\Nueva\Nueva\drivers\datos.csv")
         # Manipular los datos y crear el nuevo vector de datos
-        data = [['X Fixation Data', 'Y Fixation Data', 'Timestamp', 'Valencia', 'Emocion']]
+        data = [['X Fixation Data', 'Y Fixation Data', 'Timestamp', 'Valencia', 'Emocion', 'Activacion']]
 
         # Aquí puedes usar los datos de pos_data y neg_data para manipularlos y crear el nuevo vector de datos
         # ...
         pos_data = pos_data[["X Gaze Data", "Y Gaze Data", "Timestamp"]]
         pos_data.columns = ["X Fixation Data", "Y Fixation Data", "Timestamp"]
         pos_data["Valencia"] = 1
+        pos_data["Activacion"] = resultados.loc[resultados["Valencia"] == 1, "Activacion"]
         pos_data["Emocion"] = "Positiva"
 
         neg_data = neg_data[["X Gaze Data", "Y Gaze Data", "Timestamp"]]
         neg_data.columns = ["X Fixation Data", "Y Fixation Data", "Timestamp"]
         neg_data["Valencia"] = 0
+        neg_data["Activacion"] = resultados.loc[resultados["Valencia"] == 0, "Activacion"]
         neg_data["Emocion"] = "Negativa"
 
         data = pos_data.append(neg_data)
-        data.to_csv("resultados.csv", index=False)
+        data.to_csv("resultados1.csv", index=False)
         return data
+
+
     
 
 
