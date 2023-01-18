@@ -112,10 +112,6 @@ class gazeProcessor:
         data.to_csv("resultados1.csv", index=False)
         return data
 
-
-    
-
-
     def scanVideo(self, length = 10):
         """
         Método que genera el video de sacadas a paritr de un arreglo de datos del
@@ -186,7 +182,6 @@ class gazeProcessor:
 #El objetivo es hacer que cada circulo demuestre una emocion y se pinte de acuerdo al color de la emoción, en la siguiente linea explico los colores
 #El color rojo es para la emocion positiva, azul para la negativa y gris para la neutral.
 #Como te expique antes, se usaran valores para la valencia y activacion, te dare detalles enseguida
-#El registro de la informacion debe ser en un archivo csv con las siguientes caracteristicas
                 #Define el tamaño de los circulos dependiendo de su duración
                 CIRCLE_ID = 0
                 for fig in fixList:
